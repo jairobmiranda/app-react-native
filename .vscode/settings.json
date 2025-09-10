@@ -3,5 +3,14 @@
     "source.fixAll": "explicit",
     "source.organizeImports": "explicit",
     "source.sortMembers": "explicit"
-  }
+  },
+  "editor.rulers": [
+    {
+      "column": 90,
+      "color": "#2c2f5c6b"
+    }
+  ],
+  "editor.tabSize": 2,
+  "editor.insertSpaces": true,
+  "editor.formatOnSave": true
 }
