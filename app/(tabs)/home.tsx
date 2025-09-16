@@ -10,7 +10,7 @@ export default function Home() {
   return (
     <View style={[styles.container, { backgroundColor: colors.background }]}>
       <Text style={[styles.text, { color: colors.primary, fontFamily: fonts.bold }]}>
-        Bem-vindo à Home!
+        🏠 Página Inicial
       </Text>
     </View>
   );
