@@ -1,7 +1,15 @@
 // install prettierrc
 npm install @reduxjs/toolkit react-redux
+
+// Redux
 npm install -D @types/react-redux
+
+// Safe Area
 expo install react-native-safe-area-context
+
+// Authenticação (impressão digital, Face ID ou reconhecimento facial no Android)
+npx expo install expo-local-authentication
+npx expo install expo-secure-store
 
 ---
 
@@ -18,7 +26,8 @@ A organização segue **boas práticas de mercado**, pensando em escalabilidade 
 - React Navigation – Sistema de navegação (Stack, Tabs)
 - Redux Toolkit – Gerenciamento de estado
 - TypeScript – Tipagem estática
-- AsyncStorage – Armazenamento local
+- AsyncStorage – Armazenamento local por meio do redux-persist
+- SecureStore – Armazenamento muito mais seguro do que o Redux para dado sensível (login, senha, tokens)
 
 ---
 

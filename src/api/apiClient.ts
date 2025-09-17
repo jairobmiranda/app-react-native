@@ -3,7 +3,7 @@ import axios from 'axios';
 const apiClient = axios.create({
   baseURL:
     process.env.EXPO_PUBLIC_API_URL ||
-    'https://webhook.site/2cacce5e-dd9c-4006-b80a-7107f0487a7d',
+    'https://webhook.site/c48aad15-dee6-4b6f-b975-0f3e5f759956',
   headers: {
     'Content-Type': 'application/json',
   },

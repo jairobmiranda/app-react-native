@@ -8,6 +8,7 @@ import { useState } from 'react';
 import {
   ActivityIndicator,
   StyleSheet,
+  Switch,
   Text,
   TextInput,
   TouchableOpacity,
@@ -24,6 +25,7 @@ export default function Login() {
   const dispatch = useDispatch();
   const colorScheme = useColorScheme();
   const isAuthenticated = useSelector((state: RootState) => state.auth.isAuthenticated);
+  const [biometriaAtiva, setBiometriaAtiva] = useState(false);
 
   // Definição de cores para tema dark/light
   const theme = {
@@ -124,6 +126,16 @@ export default function Login() {
           value={password}
           onChangeText={setPassword}
         />
+        <View style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 14 }}>
+          <Switch
+            value={biometriaAtiva}
+            onValueChange={setBiometriaAtiva}
+            thumbColor={biometriaAtiva ? current.button : current.border}
+          />
+          <Text style={{ marginLeft: 8, color: current.text, fontSize: 16 }}>
+            Entrar com biometria
+          </Text>
+        </View>
         {error ? (
           <Text style={[styles.error, { color: current.error }]}>{error}</Text>
         ) : null}
