@@ -11,6 +11,11 @@ expo install react-native-safe-area-context
 npx expo install expo-local-authentication
 npx expo install expo-secure-store
 
+```javascript
+// https://codepen.io/dsenneff/pen/NyVrzB/2c3e5bc86b372d5424b00edaf4990173
+// referencia para tela de login
+```
+
 ---
 
 # 📱 Projeto React Native com Expo, TypeScript e Redux Toolkit

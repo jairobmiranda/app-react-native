@@ -68,9 +68,9 @@ export default function TabsLayout() {
         }}
       />
       <Tabs.Screen
-        name="app"
+        name="AppNovo"
         options={{
-          tabBarLabel: 'App',
+          tabBarLabel: 'AppNovo',
           tabBarIcon: ({ color, size }) => (
             <Ionicons name="apps-outline" size={24} color={color} />
           ),

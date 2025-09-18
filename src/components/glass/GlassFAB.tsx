@@ -9,6 +9,7 @@ import {
   StyleSheet,
   Text,
   View,
+  useColorScheme,
 } from 'react-native';
 import Animated, {
   Easing,
@@ -24,6 +25,7 @@ export type GlassFABProps = {
   onPress: (e: GestureResponderEvent) => void;
   bottom?: number; // distância do fundo
   right?: number; // distância da direita
+  scheme?: 'light' | 'dark';
 };
 
 export function GlassFAB({
@@ -32,7 +34,11 @@ export function GlassFAB({
   onPress,
   bottom = 28,
   right = 20,
+  scheme,
 }: GlassFABProps) {
+  const deviceScheme = useColorScheme?.() ?? 'light';
+  const mode = scheme ?? (deviceScheme === 'dark' ? 'dark' : 'light');
+  const isDark = mode === 'dark';
   // valor animado para mover o sheen (0 -> 1)
   const t = useSharedValue(0);
   useEffect(() => {
@@ -42,13 +48,12 @@ export function GlassFAB({
       true
     );
   }, [t]);
-
-  const sheenStyle = useAnimatedStyle(() => {
-    // translateX de -60% até 60% da largura do botão
-    const translateX = (t.value - 0.5) * 140; // porcentagem simulada
+  // anel de brilho rotativo (borda apenas)
+  const ringStyle = useAnimatedStyle(() => {
+    const rotate = `${t.value * 360}deg`;
     return {
-      transform: [{ translateX }],
-      opacity: 0.85 - Math.abs(t.value - 0.5),
+      transform: [{ rotate }],
+      opacity: 0.35, // bem suave
     } as any;
   });
 
@@ -56,37 +61,71 @@ export function GlassFAB({
     <View style={[styles.container, { bottom, right }]}>
       <View style={styles.fabWrapper}>
         <BlurView
-          intensity={30}
-          tint="default"
+          intensity={26}
+          tint={isDark ? 'dark' : 'light'}
           style={[StyleSheet.absoluteFill, { borderRadius: 999 }]}
         />
-        {/* realce base azulado com toque amarelado para "água" */}
+        {/* gradiente bem sutil para volume em light */}
         <LinearGradient
-          colors={['rgba(170,210,255,0.45)', 'rgba(255,250,200,0.12)', 'transparent']}
+          colors={
+            isDark
+              ? ['rgba(255,255,255,0.10)', 'rgba(255,255,255,0.04)', 'transparent']
+              : ['rgba(255,255,255,0.65)', 'rgba(255,255,255,0.28)', 'transparent']
+          }
           start={{ x: 0, y: 0 }}
           end={{ x: 1, y: 1 }}
           style={[StyleSheet.absoluteFill, { borderRadius: 999 }]}
         />
-        {/* faixa de brilho animada */}
-        <Animated.View pointerEvents="none" style={[styles.sheen, sheenStyle]}>
-          <LinearGradient
-            colors={[
-              'rgba(255,255,200,0.0)',
-              'rgba(255,245,170,0.7)',
-              'rgba(255,255,200,0.0)',
-            ]}
-            start={{ x: 0, y: 0 }}
-            end={{ x: 1, y: 1 }}
-            style={StyleSheet.absoluteFill}
-          />
+        {/* anel de brilho animado, apenas na borda */}
+        <Animated.View
+          pointerEvents="none"
+          style={[
+            StyleSheet.absoluteFill,
+            { borderRadius: 999, overflow: 'hidden' },
+            ringStyle,
+          ]}
+        >
+          <View style={styles.ringBand}>
+            <LinearGradient
+              colors={[
+                'rgba(255,255,255,0)',
+                'rgba(255,255,255,0.75)',
+                'rgba(255,255,255,0)',
+              ]}
+              start={{ x: 0, y: 0 }}
+              end={{ x: 1, y: 1 }}
+              style={StyleSheet.absoluteFill}
+            />
+          </View>
         </Animated.View>
+
+        {/* máscara interna para ocultar o brilho no centro */}
+        <View
+          pointerEvents="none"
+          style={{
+            position: 'absolute',
+            left: 2,
+            top: 2,
+            right: 2,
+            bottom: 2,
+            borderRadius: 999,
+            backgroundColor: isDark ? 'rgba(10,14,20,0.28)' : 'rgba(255,255,255,0.58)',
+          }}
+        />
         <Pressable
           style={styles.fab}
           onPress={onPress}
-          android_ripple={{ color: 'rgba(255,255,255,0.2)', borderless: true }}
+          android_ripple={{
+            color: isDark ? 'rgba(255,255,255,0.08)' : 'rgba(0,0,0,0.06)',
+            borderless: true,
+          }}
         >
-          <Ionicons name={icon} size={24} color="#fff" />
-          {label ? <Text style={styles.fabLabel}>{label}</Text> : null}
+          <Ionicons name={icon} size={24} color={isDark ? '#fff' : '#111'} />
+          {label ? (
+            <Text style={[styles.fabLabel, { color: isDark ? '#fff' : '#111' }]}>
+              {label}
+            </Text>
+          ) : null}
         </Pressable>
       </View>
     </View>
@@ -102,19 +141,19 @@ const styles = StyleSheet.create({
   fabWrapper: {
     borderRadius: 999,
     overflow: 'hidden',
-    backgroundColor: 'rgba(10,30,50,0.22)',
+    backgroundColor: 'transparent',
     ...Platform.select({
       ios: {
         shadowColor: '#000',
-        shadowOpacity: 0.25,
-        shadowRadius: 14,
-        shadowOffset: { width: 0, height: 10 },
+        shadowOpacity: 0.12,
+        shadowRadius: 12,
+        shadowOffset: { width: 0, height: 8 },
       },
-      android: { elevation: 6 },
+      android: { elevation: 4 },
       default: {},
     }),
     borderWidth: StyleSheet.hairlineWidth,
-    borderColor: 'rgba(190,220,255,0.35)',
+    borderColor: 'transparent',
   },
   fab: {
     minWidth: 56,
@@ -126,16 +165,15 @@ const styles = StyleSheet.create({
     gap: 8,
   },
   fabLabel: {
-    color: '#fff',
+    color: '#111',
     fontWeight: '600',
   },
-  sheen: {
+  ringBand: {
     position: 'absolute',
-    top: 0,
-    bottom: 0,
-    width: 60,
-    borderRadius: 999,
-    // leve rotação para dar a sensação de "passada" diagonal
-    transform: [{ rotate: '20deg' }],
+    left: '-25%',
+    right: '-25%',
+    top: '-25%',
+    bottom: '-25%',
+    transform: [{ rotate: '25deg' }],
   },
 });

@@ -15,12 +15,16 @@ export function GlassHeader({ title, subtitle }: GlassHeaderProps) {
     <View style={styles.container}>
       <View style={styles.glass}>
         <BlurView
-          intensity={28}
-          tint="default"
+          intensity={isDark ? 24 : 30}
+          tint={isDark ? 'dark' : 'light'}
           style={[StyleSheet.absoluteFill, { borderRadius: 20 }]}
         />
         <LinearGradient
-          colors={['rgba(170,210,255,0.32)', 'rgba(255,245,170,0.08)', 'transparent']}
+          colors={[
+            isDark ? 'rgba(120,170,255,0.12)' : 'rgba(255,255,255,0.7)',
+            isDark ? 'rgba(255,245,170,0.06)' : 'rgba(255,255,255,0.35)',
+            'transparent',
+          ]}
           start={{ x: 0, y: 0 }}
           end={{ x: 1, y: 1 }}
           style={[StyleSheet.absoluteFill, { borderRadius: 20 }]}
@@ -31,7 +35,7 @@ export function GlassHeader({ title, subtitle }: GlassHeaderProps) {
             <Text
               style={[
                 styles.subtitle,
-                { color: isDark ? 'rgba(255,255,255,0.85)' : 'rgba(0,0,0,0.65)' },
+                { color: isDark ? 'rgba(255,255,255,0.85)' : 'rgba(17,17,17,0.65)' },
               ]}
             >
               {subtitle}
@@ -51,19 +55,19 @@ const styles = StyleSheet.create({
   glass: {
     overflow: 'hidden',
     borderRadius: 20,
-    backgroundColor: 'rgba(10,30,50,0.16)',
+    backgroundColor: 'rgba(255,255,255,0.6)',
     ...Platform.select({
       ios: {
         shadowColor: '#000',
-        shadowOpacity: 0.2,
+        shadowOpacity: 0.1,
         shadowRadius: 12,
         shadowOffset: { width: 0, height: 8 },
       },
-      android: { elevation: 4 },
+      android: { elevation: 3 },
       default: {},
     }),
     borderWidth: StyleSheet.hairlineWidth,
-    borderColor: 'rgba(190,220,255,0.28)',
+    borderColor: 'rgba(0,0,0,0.06)',
   },
   content: {
     paddingVertical: 16,
@@ -72,10 +76,9 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 24,
     fontWeight: '700',
-    color: '#fff',
+    color: '#111',
   },
   subtitle: {
     marginTop: 4,
-    color: 'rgba(255,255,255,0.85)',
   },
 });

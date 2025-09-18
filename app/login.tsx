@@ -28,34 +28,36 @@ export default function Login() {
   const [biometriaAtiva, setBiometriaAtiva] = useState(false);
 
   // Definição de cores para tema dark/light
+  // theme.sesc.modern.ts
   const theme = {
     dark: {
-      background: '#181A20',
-      card: '#23263A',
-      input: '#2C2F48',
-      border: '#363A4F',
-      text: '#fff',
-      subtitle: '#bbb',
-      button: '#6C63FF',
-      link: '#6C63FF',
-      error: '#FF5370',
-      footer: '#555',
-      icon: '#6C63FF',
+      background: '#061428', // fundo profundo, ainda azulado (não preto)
+      card: '#0C2236', // superfície com profundidade e toque frio
+      input: '#0E2A44', // campos com leve matiz azul
+      border: '#254B68', // borda azul-petróleo sutil
+      text: '#EAF6FF', // off-white com toque azulado (menos brilho)
+      subtitle: '#9FB8C9', // azul acinzentado para secundários
+      button: '#19A7FF', // azul-ciano vibrante, inovador (contraste sobre dark)
+      link: '#FFC857', // amarelo/âmbar moderno para realces
+      error: '#FF6B7A', // erro com boa legibilidade e personalidade
+      footer: '#6E8CA0', // neutro frio para rodapés
+      icon: '#FFC857', // ícones em amarelo para destaque sobre dark
     },
+
     light: {
-      background: '#F5F6FA',
-      card: '#fff',
-      input: '#F0F1F6',
-      border: '#D1D5DB',
-      text: '#181A20',
-      subtitle: '#555',
-      button: '#6C63FF',
-      link: '#6C63FF',
-      error: '#FF5370',
-      footer: '#888',
-      icon: '#6C63FF',
+      background: '#F6FAFF', // fundo claro com leve matiz azulado (mais suave que branco)
+      card: '#FFFFFF', // superfície limpa
+      input: '#F2F8FF', // campos com toque de azul para coerência visual
+      border: '#D9EAF9', // bordas muito suaves, azul-claro
+      text: '#062A44', // marinho profundo (melhor leitura que preto puro)
+      subtitle: '#506976', // cinza azulado para textos secundários
+      button: '#0B84FF', // azul moderno (harmoniza com Sesc, mas mais atual)
+      link: '#FFC857', // mesmo amarelo/âmbar moderno para consistência
+      error: '#FF5A6B', // variante clara do erro (boa visibilidade)
+      footer: '#8CA3B6', // neutro para rodapé consistente com o sistema
+      icon: '#0B84FF', // ícones em azul moderno no light
     },
-  };
+  } as const;
 
   const current = colorScheme === 'dark' ? theme.dark : theme.light;
 
